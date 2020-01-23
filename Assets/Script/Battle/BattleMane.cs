@@ -1,18 +1,45 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class BattleMane : MonoBehaviour
+using Player;
+namespace BattleManeger
 {
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>
+    /// バトルの勝利条件
+    /// </summary>
+    public class BattleMane : MonoBehaviour
     {
-        
-    }
+        static public int EnemyCount { get; set; } = 0;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        enum Win
+        {
+            Player,
+            Enemy,
+        }
+        private void Update()
+        {
+            if (EnemyCount == 0)
+            {
+                GameSet(Win.Player);
+            }
+            if (PlayerStatus.PlayerLife <= 0)
+            {
+                GameSet(Win.Enemy);
+            }
+        }
+        void GameSet(Win win)
+        {
+            switch (win)
+            {
+                case Win.Player:
+                    Debug.Log("プレイヤーの勝ち");
+                    break;
+                case Win.Enemy:
+                    Debug.Log("敵の勝ち");
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

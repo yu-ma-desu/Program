@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Xboxコントローラー確認用
+/// Xboxコントローラー確認用、ゲームには関らない
 /// </summary>
 namespace Other
 {

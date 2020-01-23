@@ -2,22 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sample : MonoBehaviour
+namespace Other
 {
-    SingletonTest test1;
-    SingletonTest test2;
-    // Start is called before the first frame update
-    void Start()
+    /// <summary>
+    /// シングルトンのテスト、ゲームには関らない
+    /// </summary>
+    public class Sample : MonoBehaviour
     {
-        test1 = SingletonTest.Instance;
-        test2 = SingletonTest.Instance;
-
-        if (test1 == test2)
+        SingletonTest test1;
+        SingletonTest test2;
+        void Start()
         {
-            Debug.Log("等しい");
+            test1 = SingletonTest.Instance;
+            test2 = SingletonTest.Instance;
+
+            if (test1 == test2)
+            {
+                Debug.Log("等しい");
+            }
+            Debug.Log(test2.TestNum);
+            test1.SetNum(100);
+            Debug.Log(test2.TestNum);
         }
-        Debug.Log(test2.TestNum);
-        test1.SetNum(100);
-        Debug.Log(test2.TestNum);
     }
 }
+

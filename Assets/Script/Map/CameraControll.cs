@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// フィールドでのカメラの移動
+/// </summary>
 public class CameraControll : MonoBehaviour
 {
     GameObject Player;
