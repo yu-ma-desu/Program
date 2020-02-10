@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using BattleManeger;
+using Player;
 
 /// <summary>
 ///敵関係
@@ -9,11 +10,17 @@ using BattleManeger;
 public class EnemyMove : MonoBehaviour
 {
     [SerializeField] float Speed;
+    [SerializeField] float WaitTime;
     [SerializeField] int Life;
-    [SerializeField] int Power;
-    [SerializeField] int Difence;
+    [SerializeField] public int Power;
+    [SerializeField] public int Difence;
     [SerializeField] int AttackRange;
+    [SerializeField] GameObject Attack;
+
     float distance;
+    float _time;
+
+    bool isAttack;
 
     GameObject[] Player;
     Transform target;
@@ -26,6 +33,7 @@ public class EnemyMove : MonoBehaviour
         Move,
         Attack,
         Deth,
+        Wait,
     }
 
     void Start()
@@ -33,6 +41,7 @@ public class EnemyMove : MonoBehaviour
         Player = GameObject.FindGameObjectsWithTag("Player");
         target = Player[0].transform;
         anim = GetComponent<Animator>();
+        BattleMane.EnemyCount++;
     }
 
     void Update()
@@ -41,9 +50,15 @@ public class EnemyMove : MonoBehaviour
 
         if (distance > AttackRange) Move(MoveParameta.Move);
 
-        else Move(MoveParameta.Attack);
+        else if (isAttack) Move(MoveParameta.Attack);
 
-        if (Life <= 0 || Input.GetKeyDown(KeyCode.Space)) Move(MoveParameta.Deth);
+        if (Life < 0) Move(MoveParameta.Deth);
+
+        if (!isAttack)
+        {
+            _time += Time.deltaTime;
+            if (_time > WaitTime) Move(MoveParameta.Wait);
+        }
     }
     /// <summary>
     /// 敵の行動
@@ -58,15 +73,20 @@ public class EnemyMove : MonoBehaviour
                 anim.SetBool("isAttack", false);
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(target.position - transform.position), 0.3f);
                 transform.position += transform.forward * Speed * Time.deltaTime;
+                isAttack = true;
                 break;
             //敵の攻撃
             case MoveParameta.Attack:
                 anim.SetBool("isAttack", true);
+                Instantiate(Attack, transform.position + transform.forward * AttackRange, Quaternion.identity, gameObject.transform);
+                isAttack = false;
+                break;
+            case MoveParameta.Wait:
                 break;
             //敵倒した時の処理
             case MoveParameta.Deth:
+                Destroy(gameObject);
                 BattleMane.EnemyCount--;
-                Destroy(this.gameObject);
                 break;
             default:
                 break;

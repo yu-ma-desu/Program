@@ -10,26 +10,37 @@ public class SpawnMane : MonoBehaviour
 {
     [SerializeField] GameObject[] EnemyPos = { };
     [SerializeField] GameObject[] PlyerPos = { };
+    [SerializeField] Cinemachine.CinemachineTargetGroup targetGroup;
     GameObject Enemy;
+    GameObject enemy;
     GameObject Player;
     int EnemyNum;
     int PlyerNum;
+    public static Vector3[] a = { };
     void Awake()
     {
         EnemyNum = Random.Range(0, 3);
     }
     void Start()
     {
+        Cinemachine.CinemachineTargetGroup.Target[] targets = new Cinemachine.CinemachineTargetGroup.Target[EnemyNum + 1];
+
         Player = (GameObject)Resources.Load("Prefab/Player/Player()");
         for (int i = 0; i <= PlyerNum; i++)
         {
-            Instantiate(Player, PlyerPos[i].transform.position, Quaternion.identity);
+            targets[0].target = Instantiate(Player, PlyerPos[i].transform.position, Quaternion.identity).transform;
         }
+        targets[0].radius = 1.0f;
+        targets[0].weight = 2.0f;
+
         Enemy = (GameObject)Resources.Load("Prefab/NPC/Enemy");
-        for (int i = 0; i <= EnemyNum; i++)
+        for (int i = 0; i < EnemyNum; i++)
         {
-            Instantiate(Enemy,EnemyPos[i].transform.position,Quaternion.identity);
-            BattleMane.EnemyCount++;
+           enemy = Instantiate(Enemy, EnemyPos[i].transform.position, Quaternion.identity);
+           targets[i+1].target = enemy.transform;
+            targets[i+1].radius = 1.0f;
+            targets[i+1].weight = 1.0f;
         }
+        targetGroup.m_Targets = targets;
     }
 }

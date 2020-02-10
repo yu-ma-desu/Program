@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Player;
+using UnityEngine.SceneManagement;
+
 namespace BattleManeger
 {
     /// <summary>
@@ -10,7 +12,11 @@ namespace BattleManeger
     public class BattleMane : MonoBehaviour
     {
         static public int EnemyCount { get; set; } = 0;
+        [SerializeField] GameObject WinImage;
+        [SerializeField] GameObject LoseImege;
 
+
+        bool isGame = false;
         enum Win
         {
             Player,
@@ -18,13 +24,17 @@ namespace BattleManeger
         }
         private void Update()
         {
-            if (EnemyCount == 0)
+            if (EnemyCount == 0 && isGame == false)
             {
                 GameSet(Win.Player);
             }
-            if (PlayerStatus.PlayerLife <= 0)
+            if (PlayerStatus.PlayerLife <= 0 && isGame == false)
             {
                 GameSet(Win.Enemy);
+            }
+            if (isGame && Input.GetKeyDown(KeyCode.A))
+            {
+                SceneManager.LoadScene(0);
             }
         }
         void GameSet(Win win)
@@ -33,13 +43,24 @@ namespace BattleManeger
             {
                 case Win.Player:
                     Debug.Log("プレイヤーの勝ち");
+                    WinResult();
                     break;
                 case Win.Enemy:
                     Debug.Log("敵の勝ち");
+                    LoseResult();
                     break;
                 default:
                     break;
             }
+            isGame = true;
+        }
+        void WinResult()
+        {
+            WinImage.SetActive(true);
+        }
+        void LoseResult()
+        {
+            LoseImege.SetActive(true);
         }
     }
 }
