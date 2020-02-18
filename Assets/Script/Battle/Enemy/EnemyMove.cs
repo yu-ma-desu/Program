@@ -16,11 +16,15 @@ public class EnemyMove : MonoBehaviour
     [SerializeField] public int Difence;
     [SerializeField] int AttackRange;
     [SerializeField] GameObject Attack;
+    [SerializeField] int Keiken;
+
+    int WaitNum;
 
     float distance;
     float _time;
 
-    bool isAttack;
+    bool isWait;
+    bool isAttack = true;
 
     GameObject[] Player;
     Transform target;
@@ -48,17 +52,24 @@ public class EnemyMove : MonoBehaviour
     {
         distance = Vector3.Distance(transform.position, Player[0].transform.position);
 
-        if (distance > AttackRange) Move(MoveParameta.Move);
+        if (distance > AttackRange && !isWait) Move(MoveParameta.Move);
 
         else if (isAttack) Move(MoveParameta.Attack);
 
         if (Life < 0) Move(MoveParameta.Deth);
 
-        if (!isAttack)
+        if (isWait)
         {
             _time += Time.deltaTime;
-            if (_time > WaitTime) Move(MoveParameta.Wait);
+            if (_time >= WaitNum)
+            {
+                isAttack = true;
+                isWait = false;
+                anim.SetBool("isAttack", false);
+                _time = 0;
+            }
         }
+
     }
     /// <summary>
     /// 敵の行動
@@ -70,26 +81,36 @@ public class EnemyMove : MonoBehaviour
         {
             //敵の移動
             case MoveParameta.Move:
-                anim.SetBool("isAttack", false);
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(target.position - transform.position), 0.3f);
                 transform.position += transform.forward * Speed * Time.deltaTime;
-                isAttack = true;
                 break;
             //敵の攻撃
             case MoveParameta.Attack:
                 anim.SetBool("isAttack", true);
                 Instantiate(Attack, transform.position + transform.forward * AttackRange, Quaternion.identity, gameObject.transform);
                 isAttack = false;
+                Move(MoveParameta.Wait);
                 break;
             case MoveParameta.Wait:
+                WaitNum = Random.Range(3, 10);
+                isWait = true;
                 break;
             //敵倒した時の処理
             case MoveParameta.Deth:
                 Destroy(gameObject);
                 BattleMane.EnemyCount--;
+                BattleMane.Keiken += Keiken;
                 break;
             default:
                 break;
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "PlayerAttack")
+        {
+            Life -= PlayerStatus.PlayerPower - Difence;
+            Debug.Log(Life);
         }
     }
 }

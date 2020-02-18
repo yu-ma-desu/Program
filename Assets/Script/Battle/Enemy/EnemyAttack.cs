@@ -5,13 +5,25 @@ using Player;
 
 public class EnemyAttack : MonoBehaviour
 {
+    [SerializeField] float _destroy;
     GameObject Parent;
     EnemyMove enemy;
+    Boss boss;
+    int Damege;
     private void Start()
     {
         Parent = transform.root.gameObject;
-        enemy = Parent.GetComponent<EnemyMove>();
-        Invoke("_Destory", 2);
+        if (PlayerPrefs.GetInt("Battle") == 1)
+        {
+            enemy = Parent.GetComponent<EnemyMove>(); 
+            Damege = enemy.Power - PlayerStatus.PlayerDifece;
+        }
+        else if (PlayerPrefs.GetInt("Battle") == 2)
+        {
+            boss = Parent.GetComponent<Boss>();
+            Damege = boss.Power - PlayerStatus.PlayerDifece;
+        }
+        Invoke("_Destory", _destroy);
     }
     void _Destory()
     {
@@ -21,7 +33,11 @@ public class EnemyAttack : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            PlayerStatus.PlayerLife -= enemy.Power;
+            if (Damege <= 0)
+            {
+                Damege = 1;
+            }
+            PlayerStatus.PlayerLife -= Damege;
         }
     }
 }

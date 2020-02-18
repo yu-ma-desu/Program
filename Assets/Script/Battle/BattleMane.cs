@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Player;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace BattleManeger
 {
@@ -12,8 +13,10 @@ namespace BattleManeger
     public class BattleMane : MonoBehaviour
     {
         static public int EnemyCount { get; set; } = 0;
+        static public int Keiken { get; set; } = 0;
         [SerializeField] GameObject WinImage;
         [SerializeField] GameObject LoseImege;
+        [SerializeField] Text text;
 
 
         bool isGame = false;
@@ -32,13 +35,14 @@ namespace BattleManeger
             {
                 GameSet(Win.Enemy);
             }
-            if (isGame && Input.GetKeyDown(KeyCode.A))
+            if (isGame && Input.GetKeyDown("joystick button 2"))
             {
                 SceneManager.LoadScene(0);
             }
         }
         void GameSet(Win win)
         {
+            MapMane.EnemyCount -= 1;
             switch (win)
             {
                 case Win.Player:
@@ -53,14 +57,22 @@ namespace BattleManeger
                     break;
             }
             isGame = true;
+            EnemyCount = 0;
         }
         void WinResult()
         {
             WinImage.SetActive(true);
+            text.text = Keiken.ToString();
         }
         void LoseResult()
         {
             LoseImege.SetActive(true);
+
+            PlayerPrefs.DeleteKey("X");
+            PlayerPrefs.DeleteKey("Y");
+            PlayerPrefs.DeleteKey("Z");
+
+            PlayerStatus.PlayerLife = 30;
         }
     }
 }
