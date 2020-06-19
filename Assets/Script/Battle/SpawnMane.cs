@@ -4,7 +4,7 @@ using UnityEngine;
 using BattleManeger;
 
 /// <summary>
-/// 敵味方の生成
+/// 敵味方の生成、CinemaCamera使用
 /// </summary>
 public class SpawnMane : MonoBehaviour
 {
@@ -25,6 +25,7 @@ public class SpawnMane : MonoBehaviour
     }
     void Start()
     {
+        //エネミーの場合
         if (PlayerPrefs.GetInt("Battle") == 1)
         {
             Cinemachine.CinemachineTargetGroup.Target[] targets = new Cinemachine.CinemachineTargetGroup.Target[EnemyNum + 1 + PlyerNum + 1];
@@ -48,6 +49,7 @@ public class SpawnMane : MonoBehaviour
             targetGroup.m_Targets = targets;
         }
 
+        //ボスの場合
         if (PlayerPrefs.GetInt("Battle") == 2)
         {
             Cinemachine.CinemachineTargetGroup.Target[] targets = new Cinemachine.CinemachineTargetGroup.Target[2];

@@ -4,6 +4,9 @@ using UnityEngine;
 using Player;
 using UnityEngine.UI;
 
+/// <summary>
+/// HPの表記
+/// </summary>
 public class slider : MonoBehaviour
 {
     public Slider _slider;

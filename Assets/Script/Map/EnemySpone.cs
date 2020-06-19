@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//フィールドのエネミー生成
 public class EnemySpone : MonoBehaviour
 {
     [SerializeField] GameObject enemy;

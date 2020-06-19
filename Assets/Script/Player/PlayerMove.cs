@@ -12,7 +12,7 @@ public class PlayerMove : MonoBehaviour
     float x;
     float y;
     float z;
-
+    ///戦闘終了後のリスポーン位置
     private void Awake()
     {
         x = PlayerPrefs.GetFloat("X");
@@ -29,7 +29,7 @@ public class PlayerMove : MonoBehaviour
         }
         transform.position = new Vector3(x, y, z);
     }
-    // Update is called once per frame
+    //移動
     void Update()
     {
         float lsh = Input.GetAxis("LStick_Horizontal") * Speed;
@@ -46,6 +46,7 @@ public class PlayerMove : MonoBehaviour
             PlayerPrefs.DeleteKey("Z");
         }
     }
+    //エネミー衝突時の反応
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Enemy")

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 namespace BattleManeger
 {
     /// <summary>
-    /// バトルの勝利条件
+    /// バトルの勝利条件、バトル終了後の処理
     /// </summary>
     public class BattleMane : MonoBehaviour
     {
@@ -64,6 +64,7 @@ namespace BattleManeger
             WinImage.SetActive(true);
             text.text = Keiken.ToString();
         }
+        //負けた場合の処理
         void LoseResult()
         {
             LoseImege.SetActive(true);

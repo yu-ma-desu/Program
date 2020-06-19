@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Player;
 
+/// <summary>
+/// 敵の攻撃ダメージ、攻撃オブジェクト生成
+/// </summary>
 public class EnemyAttack : MonoBehaviour
 {
     [SerializeField] float _destroy;
@@ -13,6 +16,7 @@ public class EnemyAttack : MonoBehaviour
     private void Start()
     {
         Parent = transform.root.gameObject;
+
         if (PlayerPrefs.GetInt("Battle") == 1)
         {
             enemy = Parent.GetComponent<EnemyMove>(); 
@@ -29,6 +33,7 @@ public class EnemyAttack : MonoBehaviour
     {
         Destroy(gameObject);
     }
+    //ダメージの最低値
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")

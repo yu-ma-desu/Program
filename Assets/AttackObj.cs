@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AttackObj : MonoBehaviour
 {
+    //プレイヤーの打った球の処理 関連script TAma
     // Start is called before the first frame update
     void Start()
     {

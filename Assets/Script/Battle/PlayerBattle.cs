@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using BattleManeger;
 
+/// <summary>
+/// プレイヤーバトル中行動
+/// </summary>
 public class PlayerBattle : MonoBehaviour
 {
     float Speed = 5f;
@@ -18,7 +21,6 @@ public class PlayerBattle : MonoBehaviour
         third,
         final
     }
-    // Update is called once per frame
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -47,6 +49,10 @@ public class PlayerBattle : MonoBehaviour
             Instantiate(Magik, transform.position + transform.forward * -1, Quaternion.identity);
         }
     }
+    /// <summary>
+    /// 連続攻撃
+    /// </summary>
+    /// <param name="Num"> 攻撃回数</param>
     void Miss(num Num)
     {
         switch (Num)

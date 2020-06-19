@@ -4,6 +4,9 @@ using UnityEngine;
 using BattleManeger;
 using Player;
 
+/// <summary>
+/// ボスの行動
+/// </summary>
 public class Boss : MonoBehaviour
 {
     [SerializeField] int Life;
